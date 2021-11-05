@@ -1,5 +1,11 @@
 	#include <xc.inc>
 	
+	
+	; program reads user defined data within the program memory
+	; and displays contents byte by byte via LEDs on PORTC
+	; PORTD will allow us to control led update speed and start/stop
+	
+	
 psect	code, abs
 main:
 	org 0x0
