@@ -22,7 +22,7 @@ test:
 	movf	PORTD, W, A	    ; 1c
 	cpfsgt 	0x06, A		    ; 1c
 	bra 	loop		    ; 2c, Not yet finished goto start of loop again
-				    ; 8c total, 4x8 = 32 clock cycles, 5e-7s for 1 loop
+				    ; 8c total, 4x8 = 32 clock cycles, 5e-7s for 1 loop, hi
 	goto 	0x0		    ; Re-run program from start
 
 	end	main
