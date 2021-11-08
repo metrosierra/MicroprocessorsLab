@@ -19,38 +19,27 @@ setup:
 	bsf	EEPGD 	; access Flash program memory
 	
      	movlw	0x0
-	movwf	TRISC, A	    ; Port C all outputs
+	movwf	TRISE, A	    ; Port C all outputs
 	
 	movlw	0xFF
 	movwf	TRISD, A	    
 	movlw	0x0
 	
-
 	goto	start
 	; ******* My data and where to put it in RAM *
 	
-
-	
 myData:
 	db	0x01, 0x02, 0x04, 0x08
-;	db	'h', 'e', 'y'
 	myArray EQU 0x400 ;RAM add
 	counter EQU 0x02  
-	align	2	;align???
+	align	2	; ensure alignment of subsequent instructions
 
 
-;myTable:
-;	db	'T','h','i','s',' ','i','s',' ','v','e','r','y'
-;	db	' ','p','a','i','n',' ','t','o','d','o'
-;	myArray EQU 0x400	; Address in RAM for data
-;	counter EQU 0x10	; Address of counter variable
-;	align	2		; ensure alignment of subsequent instructions ????
-	
 	; ******* Main programme *********************
 start:	
 	lfsr	0, myArray	; Load FSR0 with address in RAM	
 	movlw	low highword(myData)	; address of data in PM
-	movwf	TBLPTRU, A	; load upper bits to TBLPTRU
+ 	movwf	TBLPTRU, A	; load upper bits to TBLPTRU
 	movlw	high(myData)	; address of data in PM
 	movwf	TBLPTRH, A	; load high byte to TBLPTRH
 	movlw	low(myData)	; address of data in PM
@@ -59,12 +48,28 @@ start:
 	
 	movlw	4		; 4 bytes to read
 	movwf 	counter, A	; our counter register
+	
+	; for delay 
+	movlw	0x02		; twice 
+	movwf	0x20, A
+	
+	
 loop:
         tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
+	
+	movff	TABLAT, PORTE
+	call	delay
+	
 	decfsz	counter, A	; count counter down to zero
 	bra	loop		; keep going until finished ; branch unconditionally
 	
 	goto	0
 
 	end	main
+	
+delay:
+	decfsz	0x20, F, A
+	bra	delay
+	return	0
+	
