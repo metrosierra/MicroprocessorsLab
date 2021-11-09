@@ -37,7 +37,7 @@ setup:
 	; ******* My data and where to put it in RAM *
 	
 myData:
-	db	0x01, 0x02, 0x04, 0x08
+	db	0x01, 0x02, 0x04, 0x08, 0x16, 0x32, 0x64
 	myArray EQU 0x400 ;RAM add
 	counter EQU 0x02  
 	align	2	; ensure alignment of subsequent instructions
@@ -54,7 +54,7 @@ start:
 	movwf	TBLPTRL, A	; load low byte to TBLPTRL
 	; above reads myData
 	
-	movlw	4		; 4 bytes to read
+	movlw	8		; 4 bytes to read
 	movwf 	counter, A	; our counter register
 
 
@@ -69,25 +69,40 @@ loop:
 	movlw	0x00
 	movwf	PORTE, A
 
-	
-	decfsz	counter, A	; count counter down to zero
-	
 	; for delay
-	movlw	0x05		; five times 
+	movf	PORTD, W, A
 	movwf	0x06, A
 	call delay
 	
-	
+	decfsz	counter, A	; count counter down to zero
 	bra	loop		; keep going until finished ; branch unconditionally
-	goto	0
+	goto	0x0
 
 delay:
-	; note: delay needs to be above end main
-	decfsz	0x06,A	  
+	; for subdelay
+	movlw	0xFF
+	movwf	0x07, A
+	call	subdelay
+	
+	decfsz	0x06,A	
 	bra	delay
 	return	0
-	
 
+subdelay:
+	movlw	0xFF
+	movwf	0x08, A
+	call	subdelay2
+	
+    
+	decfsz	0x07, A
+	bra	subdelay
+	return	0
+	
+subdelay2:
+	decfsz	0x08, A
+	bra	subdelay2
+	return	0
+	
 	
 	
 	
