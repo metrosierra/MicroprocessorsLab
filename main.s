@@ -19,10 +19,18 @@ setup:
 	bsf	EEPGD 	; access Flash program memory
 	
      	movlw	0x0
-	movwf	TRISE, A	    ; Port C all outputs
+	movwf	TRISC, A	    ; Port C all outputs
 	
 	movlw	0xFF
 	movwf	TRISD, A	    
+	movlw	0x0
+	
+	movlw	0xFC		    ; set PORTE to 11111100, output=0 input=1
+	movwf	TRISE, A	    ; Port E
+	
+	movlw	0x01
+	movwf	PORTE, A	    ; OE high 
+	
 	movlw	0x0
 	
 	goto	start
@@ -48,28 +56,40 @@ start:
 	
 	movlw	4		; 4 bytes to read
 	movwf 	counter, A	; our counter register
-	
-	; for delay 
-	movlw	0x02		; twice 
-	movwf	0x20, A
-	
-	
+
+
 loop:
         tblrd*+			; move one byte from PM to TABLAT, increment TBLPRT
 	movff	TABLAT, POSTINC0	; move read data from TABLAT to (FSR0), increment FSR0	
 	
-	movff	TABLAT, PORTE
-	call	delay
+	movff	TABLAT, PORTC
+	
+	movlw	0x03
+	movwf	PORTE, A
+	movlw	0x00
+	movwf	PORTE, A
+
 	
 	decfsz	counter, A	; count counter down to zero
-	bra	loop		; keep going until finished ; branch unconditionally
 	
+	; for delay
+	movlw	0x05		; five times 
+	movwf	0x06, A
+	call delay
+	
+	
+	bra	loop		; keep going until finished ; branch unconditionally
 	goto	0
 
-	end	main
-	
 delay:
-	decfsz	0x20, F, A
+	; note: delay needs to be above end main
+	decfsz	0x06,A	  
 	bra	delay
 	return	0
 	
+
+	
+	
+	
+	end	main
+
