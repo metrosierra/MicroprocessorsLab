@@ -2,8 +2,8 @@
 	
 	
 	; program reads user defined data within the program memory
-	; and displays contents byte by byte via LEDs on PORTC
-	; PORTD will allow us to control led update speed and start/stop
+	; PORTC input for update speed control
+	; PORTD outpur for serial data output 
 	
 	
 psect	code, abs
@@ -17,10 +17,6 @@ main:
 setup:	
 	bcf	CFGS	; point to Flash program memory  
 	bsf	EEPGD 	; access Flash program memory
-	
-     	movlw	0xFF
-	movwf	TRISC, A	    ; Port C input for speed
- 
 	
 	call	 SPI_MasterInit
 	
@@ -57,11 +53,6 @@ loop:
 	
 	movf	TABLAT, W, A
 	call	SPI_MasterTransmit	; output to PORTD
-
-	; for delay
-	movf	PORTC, W, A
-	movwf	0x06, A
-	call delay
 	
 	decfsz	counter, A	; count counter down to zero
 	bra	loop		; keep going until finished ; branch unconditionally
@@ -89,30 +80,6 @@ Wait_Transmit:	; Wait for transmission to complete
 	bcf 	SSP2IF		; clear interrupt flag
 	return 	
 	
-delay:
-	; for subdelay
-	movlw	0xFF
-	movwf	0x07, A
-	call	subdelay
-	
-	decfsz	0x06,A	
-	bra	delay
-	return	0
-
-subdelay:
-	movlw	0xFF
-	movwf	0x08, A
-	call	subdelay2
-	
-    
-	decfsz	0x07, A
-	bra	subdelay
-	return	0
-	
-subdelay2:
-	decfsz	0x08, A
-	bra	subdelay2
-	return	0
 	
 	
 	
