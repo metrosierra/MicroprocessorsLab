@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-global  LCD_Setup, LCD_Write_Message
+global  LCD_Setup, LCD_Write_Message, LCD_Write_Instruction
 
 psect	udata_acs   ; named variables in access ram
 LCD_cnt_l:	ds 1   ; reserve 1 byte for variable LCD_cnt_l
@@ -46,6 +46,13 @@ LCD_Setup:
 	call	LCD_delay_x4us
 	return
 
+LCD_Write_Instruction: ; Message stored at W
+	call	LCD_Send_Byte_I
+	movlw	2
+	call	LCD_delay_ms
+	return
+	
+	
 LCD_Write_Message:	    ; Message stored at FSR2, length stored in W
 	movwf   LCD_counter, A
 LCD_Loop_message:
