@@ -15,9 +15,9 @@ myArray: ds 0x80 	; reserve 128 bytes for message data
 psect data
 ; ******* myTable, data in programme memory, and its length *****
 myTable:
-	db 'H','e','l','l','o',' ','W','o','r','l','d','!',0x0a
+	db	'p','i','k','a',' ','p','i','k','a','!'
 	; message, plus carriage return
-	myTable_l EQU 13 	; length of data
+	myTable_l EQU 11 	; length of data
 	align 2
 
 psect code, abs
@@ -36,10 +36,19 @@ setup:
 	goto	start
 
 ; ******* Main programme ****************************************
+
+position:
+	; write to DDRAM --> set which each pixel block
+	;(CGRAM --> each pixel within a block)
+	
+	; movlw	11000000B	; position address instruction	; hex = 40
+	movlw	11000001B	; hex = 41
+	call	LCD_Write_Instruction
+	return 
 	
 clear:
 	movlw	00000001B
-	call	LCD_Transmit_Instruction
+	call	LCD_Write_Instruction
 	return
 	
 start:
@@ -63,15 +72,17 @@ loop:
 	lfsr	2, myArray
 	call	UART_Transmit_Message
 
-	movlw	11000000B	; position address instruction	
-	call	LCD_Write_Instruction
-
+	; set display position on lcd 
+	call	position
+	
+	; display message on lcd
 	movlw	myTable_l 	; output message to LCD
 	addlw	0xff 		; don't send the final carriage return to LCD
 	lfsr	2, myArray
 	call	LCD_Write_Message
-
-	call	clear
+	
+	; clear lcd
+;	call	clear
 	goto	$ 			; goto current line in code
 
 
