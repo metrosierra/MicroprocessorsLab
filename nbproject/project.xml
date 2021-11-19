@@ -14,6 +14,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>.</sourceRootElem>
+                <sourceRootElem>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

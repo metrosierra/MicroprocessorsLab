@@ -12,11 +12,11 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>ACD.s</itemPath>
-      <itemPath>LCD.s</itemPath>
-      <itemPath>UART.s</itemPath>
-      <itemPath>config.s</itemPath>
-      <itemPath>main.s</itemPath>
+      <itemPath>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab/ADC.s</itemPath>
+      <itemPath>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab/LCD.s</itemPath>
+      <itemPath>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab/UART.s</itemPath>
+      <itemPath>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab/config.s</itemPath>
+      <itemPath>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab/main.s</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -26,6 +26,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
+    <Elem>//icnas1.cc.ic.ac.uk/jz2319/microprocessor/MicroprocessorsLab/MicroprocessorsLab</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -78,6 +79,7 @@
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

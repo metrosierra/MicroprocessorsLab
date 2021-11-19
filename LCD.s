@@ -61,7 +61,7 @@ LCD_Hex_Nib:			; writes low nibble as hex character
 	cpfslt	LCD_tmp, A
 	addlw	0x07		; number is greater than 9 
 	addlw	0x26
-	addwf	LCD_tmp, W, A
+	addwf	LCD_tmp, W, A	
 	call	LCD_Send_Byte_D ; write out ascii
 	return	
 	
